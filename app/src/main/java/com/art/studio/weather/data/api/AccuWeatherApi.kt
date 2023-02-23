@@ -1,6 +1,7 @@
 package com.art.studio.weather.data.api
 
-import com.art.studio.weather.data.api.model.HourlyForecast
+import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
+import com.art.studio.weather.data.api.model.locationModel.Location
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,4 +17,11 @@ interface AccuWeatherApi {
         @Query("details") details: Boolean,
         @Query("metric") metric: Boolean
     ): Response<List<HourlyForecast>>
+
+    @GET("/locations/v1/cities/geoposition/search")
+    suspend fun searchCityByPosition(
+        @Query("apikey") apiKey: String,
+        @Query("q") position: String,
+        @Query("language") language: String
+    ): Response<Location>
 }
