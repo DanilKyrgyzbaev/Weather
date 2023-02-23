@@ -1,4 +1,4 @@
-package com.art.studio.weather.data.api.model
+package com.art.studio.weather.data.api.model.hourlyForecastModel
 
 data class Ceiling(
     val Value: Double,

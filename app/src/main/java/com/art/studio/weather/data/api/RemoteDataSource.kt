@@ -11,4 +11,7 @@ class RemoteDataSource @Inject constructor(private val accuWeatherApi: AccuWeath
         details: Boolean,
         metric: Boolean
     ) = accuWeatherApi.getHourlyForecast(locationKey, apiKey, language, details, metric)
+
+    suspend fun getGeoposition(apiKey: String, position: String, language: String) =
+        accuWeatherApi.searchCityByPosition(apiKey,position,language)
 }
