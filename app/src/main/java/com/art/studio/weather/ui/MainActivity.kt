@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val URL = "https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/"
     private var icon = ""
     private var data: String? = null
+    private var language = "en"
 
     private lateinit var lSwipeDetector: GestureDetectorCompat
 
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         private const val SWIPE_MAX_DISTANCE = 300
         private const val SWIPE_MIN_VELOCITY = 200
     }
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =  ActivityMainBinding.inflate(layoutInflater)
@@ -46,12 +48,25 @@ class MainActivity : AppCompatActivity() {
         lSwipeDetector = GestureDetectorCompat(this, MyGestureListener())
         binding.mainLayout.setOnTouchListener { _, event -> lSwipeDetector.onTouchEvent(event) }
         getLongitudeLatitude()
+
+        binding.kg.setOnClickListener{
+            language = "kg"
+            Toast.makeText(this@MainActivity, "Это не доступно...", Toast.LENGTH_SHORT).show()
+        }
+        binding.us.setOnClickListener {
+            language = "us"
+            getLongitudeLatitude()
+        }
+        binding.ru.setOnClickListener {
+            language = "ru"
+            getLongitudeLatitude()
+        }
     }
 
     fun getLongitudeLatitude(){
         viewModel.latlon.observe(this){
             if (it.isNotEmpty()){
-                viewModel.getGeoposition(apikey,it.toString(),"en")
+                viewModel.getGeoposition(apikey,it.toString(),language)
                 getGeoposition()
             }else{
                 Log.e("Longitude&Latitude","Пустой")
@@ -69,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     binding.localityTv.text = it.data?.TimeZone?.Name
                     locationKey = it.data?.Key
                     Log.e("TAG", "Sync Result Status Success: ${it.data?.TimeZone?.Name} ")
-                    viewModel.getAllWeather(locationKey.toString(),apikey,"en",true,true)
+                    viewModel.getAllWeather(locationKey.toString(),apikey,language,true,true)
                     getAllWeather()
                 }
                 is ResultStatus.Error -> {
