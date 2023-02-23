@@ -31,10 +31,8 @@ class MainViewModel @Inject constructor(
     private val _getGeopositionResponse = MutableLiveData<ResultStatus<Location>>()
     val getAllWeatherResponse: LiveData<ResultStatus<List<HourlyForecast>>> get() = _getAllWeatherResponse
     val getGeopositionResponse: LiveData<ResultStatus<Location>> get() = _getGeopositionResponse
-    private val _latitude = MutableLiveData<Double>()
-    val latitude: LiveData<Double> = _latitude
-    private val _longitude = MutableLiveData<Double>()
-    val longitude: LiveData<Double> = _longitude
+    private val _latlon = MutableLiveData<String>()
+    val latlon: LiveData<String> get() = _latlon
 
     fun getAllWeather(
         locationKey: String,
@@ -76,25 +74,13 @@ class MainViewModel @Inject constructor(
             ActivityCompat.requestPermissions(mainActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         } else {
             // Start location updates
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, this)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 0f, this)
         }
     }
-    override fun onCleared() {
-        super.onCleared()
-        // Remove location updates when the ViewModel is cleared
-        locationManager.removeUpdates(this)
-    }
-
     override fun onLocationChanged(locations: android.location.Location) {
-        _latitude.value = locations.latitude
-        _longitude.value = locations.longitude
-    }
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-    }
-
-    override fun onProviderEnabled(provider: String) {
-    }
-
-    override fun onProviderDisabled(provider: String) {
+        locationManager.removeUpdates(this)
+        val latlon = "${locations.latitude},${locations.longitude}"
+        _latlon.value = latlon
+        Log.e("LatLon",latlon)
     }
 }
