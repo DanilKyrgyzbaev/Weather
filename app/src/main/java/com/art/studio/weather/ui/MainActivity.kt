@@ -11,8 +11,11 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.art.studio.weather.BuildConfig
+import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
 import com.art.studio.weather.databinding.ActivityMainBinding
+import com.art.studio.weather.ui.adapter.DailyForecastAdapter
 import com.art.studio.weather.utils.ResultStatus
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +28,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var adapter: DailyForecastAdapter
     private val apikey = BuildConfig.API_KEY
     private var locationKey: String? = null
     private val URL = "https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/"
@@ -47,6 +51,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.checkSelfPermission(this@MainActivity)
         lSwipeDetector = GestureDetectorCompat(this, MyGestureListener())
         binding.mainLayout.setOnTouchListener { _, event -> lSwipeDetector.onTouchEvent(event) }
+
+        binding.recyclerview.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        adapter = DailyForecastAdapter(emptyList())
+        binding.recyclerview.adapter = adapter
+
         getLongitudeLatitude()
 
         binding.kg.setOnClickListener{
@@ -62,7 +71,6 @@ class MainActivity : AppCompatActivity() {
             getLongitudeLatitude()
         }
     }
-
     fun getLongitudeLatitude(){
         viewModel.latlon.observe(this){
             if (it.isNotEmpty()){
@@ -85,7 +93,9 @@ class MainActivity : AppCompatActivity() {
                     locationKey = it.data?.Key
                     Log.e("TAG", "Sync Result Status Success: ${it.data?.TimeZone?.Name} ")
                     viewModel.getAllWeather(locationKey.toString(),apikey,language,true,true)
+                    viewModel.getDailyForecasts(locationKey.toString(),apikey,language,true)
                     getAllWeather()
+                    getDailyForecast()
                 }
                 is ResultStatus.Error -> {
                     Log.e("TAG", "Sync Result Status Error: ${it.message} ")
@@ -107,7 +117,12 @@ class MainActivity : AppCompatActivity() {
                     binding.phraseTv.text = it.data?.get(0)?.IconPhrase
                     binding.realFeelGetTv.text = "${it.data?.get(0)?.RealFeelTemperature?.Value.toString()}°"
                     data = it.data?.get(0)?.DateTime
-                    icon = "${it.data?.get(0)?.WeatherIcon.toString()}-s.png"
+                    icon = it.data?.get(0)?.WeatherIcon.toString()
+                    when (icon.toInt()) {
+                        in 1..9 -> icon = "0$icon-s.png"
+                        in 10..Int.MAX_VALUE -> icon = "$icon-s.png"
+                        else -> println("некорректный URL")
+                    }
                     dataFormat()
                     getIcon()
                     Log.e("TAG", "Sync Result Status Success: ${it.data} ")
@@ -116,6 +131,15 @@ class MainActivity : AppCompatActivity() {
                 is ResultStatus.Error -> {
                     Log.e("TAG", "Sync Result Status Error: ${it.message} ")
                 }
+            }
+        }
+    }
+
+    fun getDailyForecast(){
+        viewModel.dailyForecasts.observe(this) { newForecasts ->
+            if (newForecasts != null) {
+                adapter.dailyForecasts = newForecasts.toMutableList()
+                adapter.notifyDataSetChanged()
             }
         }
     }

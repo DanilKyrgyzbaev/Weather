@@ -1,6 +1,7 @@
 package com.art.studio.weather.data.repository
 
 import com.art.studio.weather.data.api.RemoteDataSource
+import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
 import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
 import com.art.studio.weather.data.api.model.locationModel.Location
 import com.art.studio.weather.utils.BaseApiResponse
@@ -25,10 +26,33 @@ class AccuWeatherRepositoryImpl @Inject constructor(private val remoteDataSource
             )
         }
     }
-
-    suspend fun getGeoposition(apiKey: String, position: String, language: String): ResultStatus<Location>{
+    suspend fun getGeoposition(
+        apiKey: String,
+        position: String,
+        language: String
+    ): ResultStatus<Location> {
         return saveApiCall {
-            remoteDataSource.getGeoposition(apiKey = apiKey,position = position,language = language)
+            remoteDataSource.getGeoposition(
+                apiKey = apiKey,
+                position = position,
+                language = language
+            )
+        }
+    }
+
+    suspend fun getDailyForecast(
+        locationKey: String,
+        apiKey: String,
+        language: String,
+        isMetric: Boolean
+    ): ResultStatus<List<DailyForecast>> {
+        return saveApiCall {
+            remoteDataSource.getDailyForecast(
+                locationKey = locationKey,
+                apiKey = apiKey,
+                language = language,
+                isMetric = isMetric
+            )
         }
     }
 }
