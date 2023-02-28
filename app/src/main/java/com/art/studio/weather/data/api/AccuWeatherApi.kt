@@ -34,7 +34,7 @@ interface AccuWeatherApi {
         @Query("apikey") apiKey: String,
         @Query("language") language: String,
         @Query("metric") isMetric: Boolean
-    ): Response<List<DailyForecast>>
+    ): Response<WeatherForecast>
 
 //    @GET("forecasts/v1/daily/5day/{locationKey}")
 //    suspend fun getDailyForecasts(

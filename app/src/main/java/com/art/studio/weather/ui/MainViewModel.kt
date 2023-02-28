@@ -16,6 +16,7 @@ import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
 import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
 import com.art.studio.weather.data.api.model.locationModel.Location
+import com.art.studio.weather.data.repository.AccuWeatherRepositoryImpl
 import com.art.studio.weather.domain.usecases.GeopositionUseCase
 import com.art.studio.weather.domain.usecases.GetAllWeatherUseCase
 import com.art.studio.weather.domain.usecases.GetDailyForecastUseCase
@@ -37,8 +38,8 @@ class MainViewModel @Inject constructor(
     val getGeopositionResponse: LiveData<ResultStatus<Location>> get() = _getGeopositionResponse
     private val _latlon = MutableLiveData<String>()
     val latlon: LiveData<String> get() = _latlon
-    private val _dailyForecasts = MutableLiveData<List<DailyForecast>?>()
-    val dailyForecasts: LiveData<List<DailyForecast>?> get() = _dailyForecasts
+    private val _dailyForecasts = MutableLiveData<WeatherForecast>()
+    val dailyForecasts: LiveData<WeatherForecast> get() = _dailyForecasts
     fun getAllWeather(
         locationKey: String,
         apiKey: String,
@@ -85,7 +86,8 @@ class MainViewModel @Inject constructor(
                 language = language,
                 isMetric = isMetric
             ).let {
-                _dailyForecasts.value = it.data
+                _dailyForecasts.value = it.data!!
+                Log.e("DailyForecasts", "${it.data}")
             }
         }
     }

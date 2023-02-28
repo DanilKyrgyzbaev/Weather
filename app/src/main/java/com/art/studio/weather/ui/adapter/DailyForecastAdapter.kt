@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
+import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.databinding.ItemDailyForecastsBinding
 import com.art.studio.weather.ui.MainViewModel
 
-class DailyForecastAdapter(var dailyForecasts: List<DailyForecast>): RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
+class DailyForecastAdapter(var dailyForecasts: List<WeatherForecast>): RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastViewHolder {
         val binding = ItemDailyForecastsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -20,9 +22,10 @@ class DailyForecastAdapter(var dailyForecasts: List<DailyForecast>): RecyclerVie
     }
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
-        val dailyForecast = dailyForecasts[position]
+        val dailyForecast:DailyForecast = dailyForecasts.get(0).dailyForecasts[position]
         holder.binding.dateTv.text = dailyForecast.date
         holder.binding.tempTv.text = dailyForecast.temperature.maximum.value.toString()
+        notifyDataSetChanged()
 //        with(holder){
 //            with(dailyForecasts){
 //                binding.dateTv.text = dailyForecasts.get(position).date

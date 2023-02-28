@@ -1,5 +1,6 @@
 package com.art.studio.weather.data.api
 
+import android.util.Log
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(private val accuWeatherApi: AccuWeatherApi) {
@@ -21,4 +22,5 @@ class RemoteDataSource @Inject constructor(private val accuWeatherApi: AccuWeath
         language: String,
         isMetric: Boolean
     ) = accuWeatherApi.getWeatherForecast(locationKey,apiKey,language,isMetric)
+
 }

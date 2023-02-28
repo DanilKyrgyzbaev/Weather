@@ -138,8 +138,12 @@ class MainActivity : AppCompatActivity() {
     fun getDailyForecast(){
         viewModel.dailyForecasts.observe(this) { newForecasts ->
             if (newForecasts != null) {
-                adapter.dailyForecasts = newForecasts.toMutableList()
+               // adapter.dailyForecasts = viewModel.dailyForecasts.value.dailyForecasts
+                Log.e("Olololololololololo","${adapter.dailyForecasts}")
                 adapter.notifyDataSetChanged()
+            } else{
+                Log.e("Olololololololololo","${viewModel.dailyForecasts.value}")
+
             }
         }
     }
