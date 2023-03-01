@@ -1,9 +1,9 @@
 package com.art.studio.weather.data.api.model.dailyForecast
 
 data class Night(
-    val icon: Int,
-    val iconPhrase: String,
-    val hasPrecipitation: Boolean,
-    val precipitationType: String? = null,
-    val precipitationIntensity: String? = null
+    val Icon: Int,
+    val IconPhrase: String,
+    val HasPrecipitation: Boolean,
+    val PrecipitationType: String? = null,
+    val PrecipitationIntensity: String? = null
 )

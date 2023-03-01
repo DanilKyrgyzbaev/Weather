@@ -2,16 +2,12 @@ package com.art.studio.weather.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
 import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.databinding.ItemDailyForecastsBinding
-import com.art.studio.weather.ui.MainViewModel
 
-class DailyForecastAdapter(var dailyForecasts: List<WeatherForecast>): RecyclerView.Adapter<DailyForecastAdapter.DailyForecastViewHolder>() {
-
-
+class DailyForecastAdapter(private val dailyForecasts: List<DailyForecast>): RecyclerView.Adapter<DailyForecastViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastViewHolder {
         val binding = ItemDailyForecastsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DailyForecastViewHolder(binding)
@@ -22,11 +18,10 @@ class DailyForecastAdapter(var dailyForecasts: List<WeatherForecast>): RecyclerV
     }
 
     override fun onBindViewHolder(holder: DailyForecastViewHolder, position: Int) {
-        val dailyForecast:DailyForecast = dailyForecasts.get(0).dailyForecasts[position]
-        holder.binding.dateTv.text = dailyForecast.date
-        holder.binding.tempTv.text = dailyForecast.temperature.maximum.value.toString()
-        notifyDataSetChanged()
-//        with(holder){
+        val dailyForecasts = dailyForecasts[position]
+        holder.binding.dateTv.text = dailyForecasts.Date
+        holder.binding.tempTv.text = dailyForecasts.Temperature.Maximum.Value.toString()
+//        with(holder)
 //            with(dailyForecasts){
 //                binding.dateTv.text = dailyForecasts.get(position).date
 //                binding.tempTv.text = dailyForecasts.get(position).temperature.toString()
@@ -39,6 +34,6 @@ class DailyForecastAdapter(var dailyForecasts: List<WeatherForecast>): RecyclerV
 //            }
 //        }
     }
-
-    inner class DailyForecastViewHolder(val binding: ItemDailyForecastsBinding): RecyclerView.ViewHolder(binding.root)
 }
+class DailyForecastViewHolder(val binding: ItemDailyForecastsBinding): RecyclerView.ViewHolder(binding.root)
+

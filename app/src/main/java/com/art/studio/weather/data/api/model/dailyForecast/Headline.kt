@@ -1,13 +1,13 @@
 package com.art.studio.weather.data.api.model.dailyForecast
 
 data class Headline(
-    val effectiveDate: String,
-    val effectiveEpochDate: Long,
-    val severity: Int,
-    val text: String,
-    val category: String,
-    val endDate: String,
-    val endEpochDate: Long,
-    val mobileLink: String,
-    val link: String
+    val EffectiveDate: String,
+    val EffectiveEpochDate: Long,
+    val Severity: Int,
+    val Text: String,
+    val Category: String,
+    val EndDate: String,
+    val EndEpochDate: Long,
+    val MobileLink: String,
+    val Link: String
 )

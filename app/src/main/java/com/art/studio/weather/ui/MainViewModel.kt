@@ -38,8 +38,8 @@ class MainViewModel @Inject constructor(
     val getGeopositionResponse: LiveData<ResultStatus<Location>> get() = _getGeopositionResponse
     private val _latlon = MutableLiveData<String>()
     val latlon: LiveData<String> get() = _latlon
-    private val _dailyForecasts = MutableLiveData<WeatherForecast>()
-    val dailyForecasts: LiveData<WeatherForecast> get() = _dailyForecasts
+    private val _dailyForecasts = MutableLiveData<ResultStatus<WeatherForecast>>()
+    val dailyForecasts: LiveData<ResultStatus<WeatherForecast>> get() = _dailyForecasts
     fun getAllWeather(
         locationKey: String,
         apiKey: String,
@@ -68,6 +68,7 @@ class MainViewModel @Inject constructor(
                 language = language
             ).let {
                 _getGeopositionResponse.value = it
+                Log.e("GetGeoposition", "${it.data}")
             }
         }
 
@@ -86,8 +87,8 @@ class MainViewModel @Inject constructor(
                 language = language,
                 isMetric = isMetric
             ).let {
-                _dailyForecasts.value = it.data!!
-                Log.e("DailyForecasts", "${it.data}")
+                _dailyForecasts.value?.data?.DailyForecasts = it.data?.DailyForecasts!!
+                Log.e("DailyForecasts", "${it.data.DailyForecasts}")
             }
         }
     }

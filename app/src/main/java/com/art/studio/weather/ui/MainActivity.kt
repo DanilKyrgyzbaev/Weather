@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.art.studio.weather.BuildConfig
-import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
 import com.art.studio.weather.databinding.ActivityMainBinding
 import com.art.studio.weather.ui.adapter.DailyForecastAdapter
 import com.art.studio.weather.utils.ResultStatus
@@ -52,9 +51,9 @@ class MainActivity : AppCompatActivity() {
         lSwipeDetector = GestureDetectorCompat(this, MyGestureListener())
         binding.mainLayout.setOnTouchListener { _, event -> lSwipeDetector.onTouchEvent(event) }
 
-        binding.recyclerview.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         adapter = DailyForecastAdapter(emptyList())
         binding.recyclerview.adapter = adapter
+        binding.recyclerview.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
 
         getLongitudeLatitude()
 
@@ -100,6 +99,9 @@ class MainActivity : AppCompatActivity() {
                 is ResultStatus.Error -> {
                     Log.e("TAG", "Sync Result Status Error: ${it.message} ")
                 }
+                else -> {
+                    Log.e("TAG", "Sync Result Status Error: ${it.message} ")
+                }
             }
         }
     }
@@ -131,19 +133,33 @@ class MainActivity : AppCompatActivity() {
                 is ResultStatus.Error -> {
                     Log.e("TAG", "Sync Result Status Error: ${it.message} ")
                 }
+                else -> {
+                    Log.e("TAG", "Sync Result Status Error: ${it.message} ")
+                }
             }
         }
     }
 
-    fun getDailyForecast(){
+    fun getDailyForecast() {
         viewModel.dailyForecasts.observe(this) { newForecasts ->
-            if (newForecasts != null) {
-               // adapter.dailyForecasts = viewModel.dailyForecasts.value.dailyForecasts
-                Log.e("Olololololololololo","${adapter.dailyForecasts}")
-                adapter.notifyDataSetChanged()
-            } else{
-                Log.e("Olololololololololo","${viewModel.dailyForecasts.value}")
+            when (newForecasts) {
+                is ResultStatus.Loading -> {
+                    Toast.makeText(this@MainActivity, "Get  AllWeather...", Toast.LENGTH_SHORT).show()
+                }
+                is ResultStatus.Success -> {
+                    adapter = DailyForecastAdapter(newForecasts.data!!.DailyForecasts)
+                    binding.recyclerview.adapter = adapter
+                    adapter.notifyDataSetChanged()
+//                    adapter.setDailyForecastsList(newForecasts.data!!.DailyForecasts)
+//                    Log.e("AllWeather", "${newForecasts.data.DailyForecasts} and ${newForecasts.data.Headline}")
+                }
+                is ResultStatus.Error -> {
+                    Log.e("Error AllWeather Daily", "Sync Result Status Error: ${newForecasts.message} ")
+                }
+                else -> {
+                    Log.e("Error AllWeather Daily", "Sync Result Status Error: ${newForecasts.message} ")
 
+                }
             }
         }
     }
