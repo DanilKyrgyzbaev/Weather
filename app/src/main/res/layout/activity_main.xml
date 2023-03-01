@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bacground_screen"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
+
+
+    <ImageView
+        android:id="@+id/kg"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/kg"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/us"/>
+
+    <ImageView
+        android:id="@+id/us"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/us"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/ru"/>
+
+    <ImageView
+        android:id="@+id/ru"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:src="@drawable/ru"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
         android:id="@+id/localityTv"
@@ -35,8 +67,8 @@
 
     <ImageView
         android:id="@+id/cludyIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:src="@drawable/baseline_cloud"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/tempTv"
@@ -95,7 +127,7 @@
         android:id="@+id/realFeelGetTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="6º"
+        android:text="0º"
         android:textSize="18sp"
         android:fontFamily="@font/inter"
         android:textColor="#303345"
@@ -169,7 +201,7 @@
         android:id="@+id/windGustsGetTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="9 km/h"
+        android:text="0 km/h"
         android:textSize="18sp"
         android:fontFamily="@font/inter"
         android:textColor="#303345"
