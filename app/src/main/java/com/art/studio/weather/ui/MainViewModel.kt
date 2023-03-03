@@ -12,10 +12,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.art.studio.weather.BuildConfig
+import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
+import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
 import com.art.studio.weather.data.api.model.locationModel.Location
+import com.art.studio.weather.data.repository.AccuWeatherRepositoryImpl
 import com.art.studio.weather.domain.usecases.GeopositionUseCase
 import com.art.studio.weather.domain.usecases.GetAllWeatherUseCase
+import com.art.studio.weather.domain.usecases.GetDailyForecastUseCase
 import com.art.studio.weather.utils.ResultStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,7 +29,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getAllWeatherUseCase: GetAllWeatherUseCase,
     private val geopositionUseCase: GeopositionUseCase,
-    private val locationManager: LocationManager
+    private val locationManager: LocationManager,
+    private val getDailyForecastUseCase: GetDailyForecastUseCase
 ): ViewModel(), LocationListener {
     private val _getAllWeatherResponse = MutableLiveData<ResultStatus<List<HourlyForecast>>>()
     private val _getGeopositionResponse = MutableLiveData<ResultStatus<Location>>()
@@ -33,7 +38,8 @@ class MainViewModel @Inject constructor(
     val getGeopositionResponse: LiveData<ResultStatus<Location>> get() = _getGeopositionResponse
     private val _latlon = MutableLiveData<String>()
     val latlon: LiveData<String> get() = _latlon
-
+    private val _dailyForecasts = MutableLiveData<ResultStatus<WeatherForecast>>()
+    val dailyForecasts: LiveData<ResultStatus<WeatherForecast>> get() = _dailyForecasts
     fun getAllWeather(
         locationKey: String,
         apiKey: String,
@@ -62,9 +68,29 @@ class MainViewModel @Inject constructor(
                 language = language
             ).let {
                 _getGeopositionResponse.value = it
+                Log.e("GetGeoposition", "${it.data}")
             }
         }
 
+    }
+
+    fun getDailyForecasts(
+        locationKey: String,
+        apiKey: String,
+        language: String,
+        isMetric: Boolean
+    ) {
+        viewModelScope.launch {
+            getDailyForecastUseCase.invoke(
+                locationKey = locationKey,
+                apiKey = apiKey,
+                language = language,
+                isMetric = isMetric
+            ).let {
+                _dailyForecasts.value = it
+                Log.e("DailyForecasts", "${it.data}")
+            }
+        }
     }
 
     fun checkSelfPermission(mainActivity: MainActivity){

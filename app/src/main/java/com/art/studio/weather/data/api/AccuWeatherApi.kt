@@ -1,5 +1,7 @@
 package com.art.studio.weather.data.api
 
+import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
+import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
 import com.art.studio.weather.data.api.model.locationModel.Location
 import retrofit2.Call
@@ -24,4 +26,13 @@ interface AccuWeatherApi {
         @Query("q") position: String,
         @Query("language") language: String
     ): Response<Location>
+
+
+    @GET("forecasts/v1/daily/5day/{locationKey}")
+    suspend fun getWeatherForecast(
+        @Path("locationKey") locationKey: String,
+        @Query("apikey") apiKey: String,
+        @Query("language") language: String,
+        @Query("metric") isMetric: Boolean
+    ): Response<WeatherForecast>
 }
