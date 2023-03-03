@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainLayout.setOnTouchListener { _, event -> lSwipeDetector.onTouchEvent(event) }
 
         getLongitudeLatitude()
-        adapter = DailyForecastAdapter(ArrayList())
+        adapter = DailyForecastAdapter(ArrayList(),this)
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
 
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
             .with(this)
             .load("$URL$icon")
             .centerCrop()
-            .into(binding.cludyIv);
+            .into(binding.cludyIv)
     }
 
     inner class MyGestureListener : GestureDetector.SimpleOnGestureListener() {
