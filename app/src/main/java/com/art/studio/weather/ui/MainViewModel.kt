@@ -87,8 +87,8 @@ class MainViewModel @Inject constructor(
                 language = language,
                 isMetric = isMetric
             ).let {
-                _dailyForecasts.value?.data?.DailyForecasts = it.data?.DailyForecasts!!
-                Log.e("DailyForecasts", "${it.data.DailyForecasts}")
+                _dailyForecasts.value = it
+                Log.e("DailyForecasts", "${it.data}")
             }
         }
     }

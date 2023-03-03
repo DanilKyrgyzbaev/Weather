@@ -1,5 +1,6 @@
 package com.art.studio.weather.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,14 @@ import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
 import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.databinding.ItemDailyForecastsBinding
 
-class DailyForecastAdapter(private val dailyForecasts: List<DailyForecast>): RecyclerView.Adapter<DailyForecastViewHolder>() {
+class DailyForecastAdapter(private val dailyForecasts: ArrayList<DailyForecast>): RecyclerView.Adapter<DailyForecastViewHolder>() {
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateData(data: List<DailyForecast>) {
+        dailyForecasts.clear()
+        dailyForecasts.addAll(data)
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyForecastViewHolder {
         val binding = ItemDailyForecastsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DailyForecastViewHolder(binding)
@@ -35,5 +43,7 @@ class DailyForecastAdapter(private val dailyForecasts: List<DailyForecast>): Rec
 //        }
     }
 }
+
+
 class DailyForecastViewHolder(val binding: ItemDailyForecastsBinding): RecyclerView.ViewHolder(binding.root)
 

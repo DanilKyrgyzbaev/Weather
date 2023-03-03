@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.art.studio.weather.BuildConfig
+import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
+import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
 import com.art.studio.weather.databinding.ActivityMainBinding
 import com.art.studio.weather.ui.adapter.DailyForecastAdapter
 import com.art.studio.weather.utils.ResultStatus
@@ -51,11 +53,11 @@ class MainActivity : AppCompatActivity() {
         lSwipeDetector = GestureDetectorCompat(this, MyGestureListener())
         binding.mainLayout.setOnTouchListener { _, event -> lSwipeDetector.onTouchEvent(event) }
 
-        adapter = DailyForecastAdapter(emptyList())
+        getLongitudeLatitude()
+        adapter = DailyForecastAdapter(ArrayList())
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
 
-        getLongitudeLatitude()
 
         binding.kg.setOnClickListener{
             language = "kg"
@@ -92,8 +94,8 @@ class MainActivity : AppCompatActivity() {
                     locationKey = it.data?.Key
                     Log.e("TAG", "Sync Result Status Success: ${it.data?.TimeZone?.Name} ")
                     viewModel.getAllWeather(locationKey.toString(),apikey,language,true,true)
-                    viewModel.getDailyForecasts(locationKey.toString(),apikey,language,true)
                     getAllWeather()
+                    viewModel.getDailyForecasts(locationKey.toString(),apikey,language,true)
                     getDailyForecast()
                 }
                 is ResultStatus.Error -> {
@@ -147,11 +149,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "Get  AllWeather...", Toast.LENGTH_SHORT).show()
                 }
                 is ResultStatus.Success -> {
-                    adapter = DailyForecastAdapter(newForecasts.data!!.DailyForecasts)
-                    binding.recyclerview.adapter = adapter
-                    adapter.notifyDataSetChanged()
-//                    adapter.setDailyForecastsList(newForecasts.data!!.DailyForecasts)
-//                    Log.e("AllWeather", "${newForecasts.data.DailyForecasts} and ${newForecasts.data.Headline}")
+                    val dailyForecasts = newForecasts.data?.DailyForecasts ?: emptyList()
+                    adapter.updateData(dailyForecasts)
                 }
                 is ResultStatus.Error -> {
                     Log.e("Error AllWeather Daily", "Sync Result Status Error: ${newForecasts.message} ")
