@@ -1,9 +1,9 @@
 package com.art.studio.weather.data.api
 
-import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
-import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
-import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
-import com.art.studio.weather.data.api.model.locationModel.Location
+import com.art.studio.weather.data.model.dailyForecast.DailyForecast
+import com.art.studio.weather.data.model.dailyForecast.WeatherForecast
+import com.art.studio.weather.data.model.hourlyForecastModel.HourlyForecast
+import com.art.studio.weather.data.model.locationModel.Location
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -18,14 +18,14 @@ interface AccuWeatherApi {
         @Query("language") language: String,
         @Query("details") details: Boolean,
         @Query("metric") metric: Boolean
-    ): Response<List<HourlyForecast>>
+    ): Response<List<com.art.studio.weather.data.model.hourlyForecastModel.HourlyForecast>>
 
     @GET("/locations/v1/cities/geoposition/search")
     suspend fun searchCityByPosition(
         @Query("apikey") apiKey: String,
         @Query("q") position: String,
         @Query("language") language: String
-    ): Response<Location>
+    ): Response<com.art.studio.weather.data.model.locationModel.Location>
 
 
     @GET("forecasts/v1/daily/5day/{locationKey}")
@@ -34,5 +34,5 @@ interface AccuWeatherApi {
         @Query("apikey") apiKey: String,
         @Query("language") language: String,
         @Query("metric") isMetric: Boolean
-    ): Response<WeatherForecast>
+    ): Response<com.art.studio.weather.data.model.dailyForecast.WeatherForecast>
 }

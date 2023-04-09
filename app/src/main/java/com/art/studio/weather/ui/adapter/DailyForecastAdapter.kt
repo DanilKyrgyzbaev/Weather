@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
+import com.art.studio.weather.data.model.dailyForecast.DailyForecast
 import com.art.studio.weather.databinding.RowDailyForecastLayoutBinding
 import com.bumptech.glide.Glide
 import java.time.LocalDateTime
@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class DailyForecastAdapter(private val dailyForecasts: ArrayList<DailyForecast>,private val context: Context): RecyclerView.Adapter<DailyForecastViewHolder>() {
+class DailyForecastAdapter(private val dailyForecasts: ArrayList<DailyForecast>, private val context: Context): RecyclerView.Adapter<DailyForecastViewHolder>() {
     private val URL = "https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/"
     private var iconDay = ""
     private var iconNight = ""

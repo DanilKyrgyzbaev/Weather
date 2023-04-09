@@ -1,6 +1,7 @@
 package com.art.studio.weather.di.modules
 
 import com.art.studio.weather.data.api.AccuWeatherApi
+import com.art.studio.weather.data.api.OpenWearherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -41,5 +43,9 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun providesPostService(retrofit: Retrofit) = retrofit.create(AccuWeatherApi::class.java)
+    fun providesAccuWeatherService(retrofit: Retrofit) = retrofit.create(AccuWeatherApi::class.java)
+
+    @Singleton
+    @Provides
+    fun providesOpenWeatherService(retrofit: Retrofit) = retrofit.create(OpenWearherApi::class.java)
 }
