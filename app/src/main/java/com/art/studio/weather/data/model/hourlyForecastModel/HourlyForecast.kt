@@ -1,0 +1,31 @@
+package com.art.studio.weather.data.model.hourlyForecastModel
+
+data class HourlyForecast(
+    val DateTime: String,
+    val EpochDateTime: Long,
+    val WeatherIcon: Int,
+    val IconPhrase: String,
+    val IsDaylight: Boolean,
+    val Temperature: com.art.studio.weather.data.model.hourlyForecastModel.Temperature,
+    val RealFeelTemperature: com.art.studio.weather.data.model.hourlyForecastModel.Temperature,
+    val WetBulbTemperature: com.art.studio.weather.data.model.hourlyForecastModel.Temperature,
+    val DewPoint: com.art.studio.weather.data.model.hourlyForecastModel.Temperature,
+    val Wind: com.art.studio.weather.data.model.hourlyForecastModel.Wind,
+    val WindGust: com.art.studio.weather.data.model.hourlyForecastModel.WindGust,
+    val RelativeHumidity: Int,
+    val Visibility: com.art.studio.weather.data.model.hourlyForecastModel.Visibility,
+    val Ceiling: com.art.studio.weather.data.model.hourlyForecastModel.Ceiling,
+    val UVIndex: Int,
+    val UVIndexText: String,
+    val PrecipitationProbability: Int,
+    val RainProbability: Int,
+    val SnowProbability: Int,
+    val IceProbability: Int,
+    val TotalLiquid: com.art.studio.weather.data.model.hourlyForecastModel.TotalLiquid,
+    val Rain: com.art.studio.weather.data.model.hourlyForecastModel.TotalLiquid,
+    val Snow: com.art.studio.weather.data.model.hourlyForecastModel.TotalLiquid,
+    val Ice: com.art.studio.weather.data.model.hourlyForecastModel.TotalLiquid,
+    val CloudCover: Int,
+    val MobileLink: String,
+    val Link: String
+)

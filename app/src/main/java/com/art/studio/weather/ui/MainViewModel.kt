@@ -4,19 +4,16 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Bundle
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.art.studio.weather.BuildConfig
-import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
-import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
-import com.art.studio.weather.data.api.model.hourlyForecastModel.HourlyForecast
-import com.art.studio.weather.data.api.model.locationModel.Location
-import com.art.studio.weather.data.repository.AccuWeatherRepositoryImpl
+import com.art.studio.weather.data.model.dailyForecast.WeatherForecast
+import com.art.studio.weather.data.model.hourlyForecastModel.HourlyForecast
+import com.art.studio.weather.data.model.locationModel.Location
+import com.art.studio.weather.data.model.openWearher.OpenWeatherResponse
 import com.art.studio.weather.domain.usecases.GeopositionUseCase
 import com.art.studio.weather.domain.usecases.GetAllWeatherUseCase
 import com.art.studio.weather.domain.usecases.GetDailyForecastUseCase
@@ -40,6 +37,8 @@ class MainViewModel @Inject constructor(
     val latlon: LiveData<String> get() = _latlon
     private val _dailyForecasts = MutableLiveData<ResultStatus<WeatherForecast>>()
     val dailyForecasts: LiveData<ResultStatus<WeatherForecast>> get() = _dailyForecasts
+    private val _getOpenWeather = MutableLiveData<ResultStatus<OpenWeatherResponse>>()
+    val getOpenWeather:  LiveData<ResultStatus<OpenWeatherResponse>> get() = _getOpenWeather
     fun getAllWeather(
         locationKey: String,
         apiKey: String,

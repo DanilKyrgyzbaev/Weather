@@ -10,11 +10,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GestureDetectorCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.art.studio.weather.BuildConfig
-import com.art.studio.weather.data.api.model.dailyForecast.DailyForecast
-import com.art.studio.weather.data.api.model.dailyForecast.WeatherForecast
+import com.art.studio.weather.R
 import com.art.studio.weather.databinding.ActivityMainBinding
 import com.art.studio.weather.ui.adapter.DailyForecastAdapter
 import com.art.studio.weather.utils.ResultStatus
@@ -30,12 +30,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private lateinit var adapter: DailyForecastAdapter
-    private val apikey = BuildConfig.API_KEY
+    private val apikey = BuildConfig.API_KEY_AccuWeather
     private var locationKey: String? = null
     private val URL = "https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/"
     private var icon = ""
     private var data: String? = null
     private var language = "en"
+    private lateinit var customMenu: PopupMenu
+
 
     private lateinit var lSwipeDetector: GestureDetectorCompat
 
@@ -58,18 +60,28 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerview.adapter = adapter
         binding.recyclerview.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
 
+        optionMenu()
+    }
 
-        binding.kg.setOnClickListener{
-            language = "kg"
-            Toast.makeText(this@MainActivity, "Это не доступно...", Toast.LENGTH_SHORT).show()
+    fun optionMenu(){
+        customMenu = PopupMenu(this, binding.moreVert)
+        customMenu.inflate(R.menu.menu)
+        customMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.setting -> {
+
+                    Toast.makeText(this,"Settings Selected",Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.share -> {
+                    Toast.makeText(this,"Share Selected",Toast.LENGTH_SHORT).show()
+                    true
+                }
+                else -> false
+            }
         }
-        binding.us.setOnClickListener {
-            language = "us"
-            getLongitudeLatitude()
-        }
-        binding.ru.setOnClickListener {
-            language = "ru"
-            getLongitudeLatitude()
+        binding.moreVert.setOnClickListener {
+            customMenu.show()
         }
     }
     fun getLongitudeLatitude(){
